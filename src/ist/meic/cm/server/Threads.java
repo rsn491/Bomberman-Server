@@ -21,7 +21,7 @@ class Threads implements Runnable {
 	private ArrayList<Game> games;
 	private MapController currentMap;
 	private Socket clientSocket;
-	private int gamePos;
+	private Game game;
 
 	Threads(Socket clientSocket, ArrayList<Game> games) {
 
@@ -69,6 +69,8 @@ class Threads implements Runnable {
 						running = false;
 				} else if (request == Message.REFRESH) {
 					sendUpdatedList();
+				} else if (request == Message.READY) {
+					checkToStart();
 				} else if (request == Message.REQUEST) {
 					if (!request(fromClient))
 						running = false;
@@ -88,9 +90,29 @@ class Threads implements Runnable {
 
 	}
 
+	private void checkToStart() {
+System.out.println(playerID);
+		game.setReady(playerID);
+
+		int max = game.getMaxNumPlayers();
+
+		if (max == 1)
+			sendToPlayer(new Message(Message.FAIL));
+		else {
+
+			boolean running = true;
+			while (running) {
+				for (int i = 0; i < max; i++)
+					running = !game.getReady()[i];
+
+				max = game.getMaxNumPlayers();
+			}
+			sendToPlayer(new Message(Message.SUCCESS));
+		}
+	}
+
 	private void sendUpdatedList() {
-		sendToPlayer(new Message(Message.SUCCESS, games.get(gamePos)
-				.getPlayers()));
+		sendToPlayer(new Message(Message.SUCCESS, game.getPlayers()));
 
 	}
 
@@ -138,7 +160,7 @@ class Threads implements Runnable {
 
 						currentMap = map;
 
-						gamePos = i;
+						this.game = game;
 
 						toSend = new Message(Message.SUCCESS, playerID,
 								currentMap, addPlayer(details[1], game));
@@ -153,7 +175,7 @@ class Threads implements Runnable {
 			currentMap.joinBomberman();
 			Game game = new Game(currentMap);
 			games.add(game);
-			gamePos = games.indexOf(game);
+			this.game = games.get(games.indexOf(game));
 			toSend = new Message(Message.SUCCESS, playerID, currentMap,
 					addPlayer(details[1], game));
 		}

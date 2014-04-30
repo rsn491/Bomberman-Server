@@ -70,6 +70,7 @@ public class ExplosionThread extends Thread implements Serializable {
 		LinkedList<GhostStatus> ghostsStatus = mapController.getGhostsStatus();
 		// 
 		bombStatus.die();
+		bombStatus.getBomberman().setCanBomb(true);
 		//
 		bombExplode();
 
