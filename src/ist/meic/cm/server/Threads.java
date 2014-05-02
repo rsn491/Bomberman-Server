@@ -171,7 +171,7 @@ System.out.println(playerID);
 		}
 
 		if (!found) {
-			currentMap = new MapController(levelName);
+			currentMap = new MapController(levelName, details[2]);
 			currentMap.joinBomberman();
 			Game game = new Game(currentMap);
 			games.add(game);

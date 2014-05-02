@@ -22,8 +22,9 @@ public class MapController implements Serializable {
 	private String levelName;
 	private MapModels mapModel;
 	private String map;
+	private int robotSpeed;
 
-	public MapController(String levelName) {
+	public MapController(String levelName, String speed) {
 		numberOfPlayers = 0;
 		bombermansStatus = new LinkedList<BombermanStatus>();
 		ghostsStatus = new LinkedList<GhostStatus>();
@@ -32,6 +33,9 @@ public class MapController implements Serializable {
 		mapModel = new MapModels(levelName);
 		map = mapModel.getMap();
 		loadGhosts();
+
+		this.robotSpeed = Integer.parseInt(speed);
+
 		ghostThread = new GhostThread(this);
 		ghostThread.setRunning(true);
 		ghostThread.start();
@@ -171,5 +175,8 @@ public class MapController implements Serializable {
 	public String getMap() {
 		return map;
 	}
-	//
+
+	public int getRobotSpeed() {
+		return robotSpeed;
+	}
 }
