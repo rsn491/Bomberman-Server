@@ -23,8 +23,12 @@ public class MapController implements Serializable {
 	private MapModels mapModel;
 	private String map;
 	private int robotSpeed;
+	private static String explosionDuration;
+	private static String explosionTimeout;
+	private static String explosionRange;
 
-	public MapController(String levelName, String speed) {
+	public MapController(String levelName, String speed, String eDuration,
+			String eTimeout, String eRange) {
 		numberOfPlayers = 0;
 		bombermansStatus = new LinkedList<BombermanStatus>();
 		ghostsStatus = new LinkedList<GhostStatus>();
@@ -39,6 +43,10 @@ public class MapController implements Serializable {
 		ghostThread = new GhostThread(this);
 		ghostThread.setRunning(true);
 		ghostThread.start();
+
+		explosionDuration = eDuration;
+		explosionTimeout = eTimeout;
+		explosionRange = eRange;
 	}
 
 	public int joinBomberman() {
@@ -178,5 +186,17 @@ public class MapController implements Serializable {
 
 	public int getRobotSpeed() {
 		return robotSpeed;
+	}
+
+	public static String getExplosionDuration() {
+		return explosionDuration;
+	}
+
+	public static String getExplosionTimeout() {
+		return explosionTimeout;
+	}
+
+	public static String getExplosionRange() {
+		return explosionRange;
 	}
 }

@@ -91,7 +91,7 @@ class Threads implements Runnable {
 	}
 
 	private void checkToStart() {
-System.out.println(playerID);
+
 		game.setReady(playerID);
 
 		int max = game.getMaxNumPlayers();
@@ -127,11 +127,7 @@ System.out.println(playerID);
 					.getBombermansStatus();
 			bombermansStatus.set(playerID, fromClient.getBombermanStatus());
 			currentMap.setBombermansStatus(bombermansStatus);
-		} /*
-		 * else if (!request.equals(OperationCodes.MAP))
-		 * currentMap.bombermanMove(playerID, request);
-		 */
-		else if (request.equals(OperationCodes.MAP)) {
+		} else if (request.equals(OperationCodes.MAP)) {
 			System.out.println("Got Request");
 
 			Message toSend = new Message(Message.SUCCESS, currentMap);
@@ -171,7 +167,9 @@ System.out.println(playerID);
 		}
 
 		if (!found) {
-			currentMap = new MapController(levelName, details[2]);
+
+			currentMap = new MapController(levelName, details[2], details[3],
+					details[4], details[5]);
 			currentMap.joinBomberman();
 			Game game = new Game(currentMap);
 			games.add(game);
