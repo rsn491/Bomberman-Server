@@ -45,14 +45,18 @@ public class ExplosionThread extends Thread implements Serializable {
 		}
 
 		deleteBomb();
-
+		ExplodingThread et = new ExplodingThread(bombStatus, mapController,
+				array);
+		et.start();
+		
 		try {
 			Thread.sleep(EXPLOSION_TIMEOUT);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
+		et.setRunning(false);
 		exploded();
 	}
 
