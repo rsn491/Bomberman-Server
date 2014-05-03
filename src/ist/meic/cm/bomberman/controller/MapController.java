@@ -28,8 +28,7 @@ public class MapController implements Serializable {
 	private static String explosionTimeout;
 	private static String explosionRange;
 
-	public MapController(String levelName, String speed, String eDuration,
-			String eTimeout, String eRange) {
+	public MapController(String levelName, String[] details) {
 		numberOfPlayers = 0;
 		bombermansStatus = new LinkedList<BombermanStatus>();
 		ghostsStatus = new LinkedList<GhostStatus>();
@@ -38,16 +37,16 @@ public class MapController implements Serializable {
 		mapModel = new MapModels(levelName);
 		map = mapModel.getMap();
 		loadGhosts();
-		scoreTable = new ScoreTable();
-		this.robotSpeed = Integer.parseInt(speed);
+		scoreTable = new ScoreTable(details[6], details[7]);
+		this.robotSpeed = Integer.parseInt(details[2]);
 
 		ghostThread = new GhostThread(this);
 		ghostThread.setRunning(true);
 		ghostThread.start();
 
-		explosionDuration = eDuration;
-		explosionTimeout = eTimeout;
-		explosionRange = eRange;
+		explosionDuration = details[3];
+		explosionTimeout = details[4];
+		explosionRange = details[5];
 	}
 
 	public int joinBomberman() {
@@ -62,8 +61,8 @@ public class MapController implements Serializable {
 			for (int i = 0; i < mapArray.length; i++)
 				if (mapArray[i] == id) {
 					System.out.println("x:" + x);
-					BombermanStatus status = new BombermanStatus(playerId,i, x, y,
-							map.toCharArray());
+					BombermanStatus status = new BombermanStatus(playerId, i,
+							x, y, map.toCharArray());
 					bombermansStatus.add(status);
 					scoreTable.addPlayer(playerId);
 					break;
@@ -136,11 +135,11 @@ public class MapController implements Serializable {
 	public void killedGhost(int playerId) {
 		scoreTable.killedGhost(playerId);
 	}
-	
+
 	public void killedBomberman(int playerId) {
 		scoreTable.killedBomberman(playerId);
 	}
-	
+
 	public boolean isDead(int playerId) {
 		return bombermansStatus.get(playerId).isDead();
 	}
@@ -198,15 +197,15 @@ public class MapController implements Serializable {
 		return robotSpeed;
 	}
 
-	public static String getExplosionDuration() {
-		return explosionDuration;
+	public static int getExplosionDuration() {
+		return Integer.parseInt(explosionDuration);
 	}
 
-	public static String getExplosionTimeout() {
-		return explosionTimeout;
+	public static int getExplosionTimeout() {
+		return Integer.parseInt(explosionTimeout);
 	}
 
-	public static String getExplosionRange() {
-		return explosionRange;
+	public static int getExplosionRange() {
+		return Integer.parseInt(explosionRange);
 	}
 }

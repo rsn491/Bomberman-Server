@@ -29,11 +29,9 @@ public class ExplosionThread extends Thread implements Serializable {
 		this.position = position;
 		this.bombStatus = bombStatus;
 
-		EXPLOSION_DURATION = Integer.parseInt(MapController
-				.getExplosionDuration()) * ADJUST;
-		EXPLOSION_TIMEOUT = Integer.parseInt(MapController
-				.getExplosionTimeout()) * ADJUST;
-		EXPLOSION_RANGE = Integer.parseInt(MapController.getExplosionRange());
+		EXPLOSION_DURATION = MapController.getExplosionDuration() * ADJUST;
+		EXPLOSION_TIMEOUT = MapController.getExplosionTimeout() * ADJUST;
+		EXPLOSION_RANGE = MapController.getExplosionRange();
 	}
 
 	@Override
@@ -49,14 +47,14 @@ public class ExplosionThread extends Thread implements Serializable {
 		ExplodingThread et = new ExplodingThread(bombStatus, mapController,
 				array);
 		et.start();
-		
+
 		try {
 			Thread.sleep(EXPLOSION_TIMEOUT);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		et.setRunning(false);
 		exploded();
 	}
@@ -115,7 +113,8 @@ public class ExplosionThread extends Thread implements Serializable {
 	//
 	public void deleteBomb() {
 		LinkedList<GhostStatus> ghostsStatus = mapController.getGhostsStatus();
-		LinkedList<BombermanStatus> bombermanStatus = mapController.getBombermansStatus();
+		LinkedList<BombermanStatus> bombermanStatus = mapController
+				.getBombermansStatus();
 		//
 		bombStatus.die();
 		bombStatus.getBomberman().setCanBomb(true);
@@ -123,19 +122,21 @@ public class ExplosionThread extends Thread implements Serializable {
 		bombExplode();
 
 		for (Status ghost : ghostsStatus)
-			if(!ghost.isDead()) {
+			if (!ghost.isDead()) {
 				if (checkDeathPos(ghost.getI())) {
 					ghost.die(); // remove this ghost from the list of ghosts
 					// Statuses, no longer exists
-					mapController.killedGhost(bombStatus.getBomberman().getId()); // TODO
+					mapController
+							.killedGhost(bombStatus.getBomberman().getId()); // TODO
 				}
 			}
 		for (Status bomberman : bombermanStatus)
-			if(!bomberman.isDead()) {
+			if (!bomberman.isDead()) {
 				if (checkDeathPos(bomberman.getI())) {
 					bomberman.die();
-					if(!bomberman.equals(bombStatus.getBomberman()))
-						mapController.killedBomberman(bombStatus.getBomberman().getId());
+					if (!bomberman.equals(bombStatus.getBomberman()))
+						mapController.killedBomberman(bombStatus.getBomberman()
+								.getId());
 				}
 			}
 	}

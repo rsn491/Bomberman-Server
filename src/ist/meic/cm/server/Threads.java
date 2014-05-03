@@ -171,8 +171,7 @@ class Threads implements Runnable {
 
 		if (!found) {
 
-			currentMap = new MapController(levelName, details[2], details[3],
-					details[4], details[5]);
+			currentMap = new MapController(levelName, details);
 			currentMap.joinBomberman();
 			Game game = new Game(currentMap);
 			games.add(game);

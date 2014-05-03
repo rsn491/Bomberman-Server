@@ -3,16 +3,21 @@ package ist.meic.cm.bomberman.controller;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class ScoreTable implements Serializable{
+public class ScoreTable implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6020673959591592054L;
-	private HashMap<Integer,Integer> scoreMap;
+	private HashMap<Integer, Integer> scoreMap;
+	private int pointsRobot;
+	private int pointsOpon;
 
-	public ScoreTable() {
+	public ScoreTable(String pointsRobot, String pointsOpon) {
 		this.scoreMap = new HashMap<Integer, Integer>();
+
+		this.pointsRobot = Integer.parseInt(pointsRobot);
+		this.pointsOpon = Integer.parseInt(pointsOpon);
 	}
 
 	public void addPlayer(int playerId) {
@@ -20,7 +25,7 @@ public class ScoreTable implements Serializable{
 	}
 
 	public int getScore(int playerId) {
-		if(scoreMap.containsKey(playerId))
+		if (scoreMap.containsKey(playerId))
 			return scoreMap.get(playerId);
 		return 0;
 	}
@@ -28,19 +33,19 @@ public class ScoreTable implements Serializable{
 	public void killedGhost(int playerId) {
 		int oldscore;
 
-		if(scoreMap.containsKey(playerId)) {
+		if (scoreMap.containsKey(playerId)) {
 			oldscore = scoreMap.get(playerId);
-			scoreMap.put(playerId, oldscore + 1);
-		}	
+			scoreMap.put(playerId, oldscore + pointsRobot);
+		}
 	}
 
 	public void killedBomberman(int playerId) {
 		int oldscore;
 
-		if(scoreMap.containsKey(playerId)) {
+		if (scoreMap.containsKey(playerId)) {
 			oldscore = scoreMap.get(playerId);
-			scoreMap.put(playerId, oldscore + 1);
-		}	
+			scoreMap.put(playerId, oldscore + pointsOpon);
+		}
 	}
 
 }
