@@ -185,7 +185,6 @@ class Threads implements Runnable {
 		ArrayList<String> players = game.getPlayers();
 		players.add(playerName);
 		game.setPlayers(players);
-		System.out.println(players.size());
 		return players;
 	}
 
