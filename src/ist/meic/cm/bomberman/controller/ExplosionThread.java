@@ -1,6 +1,7 @@
 package ist.meic.cm.bomberman.controller;
 
 import ist.meic.cm.bomberman.status.BombStatus;
+import ist.meic.cm.bomberman.status.BombermanStatus;
 import ist.meic.cm.bomberman.status.GhostStatus;
 import ist.meic.cm.bomberman.status.Status;
 
@@ -114,7 +115,7 @@ public class ExplosionThread extends Thread implements Serializable {
 	//
 	public void deleteBomb() {
 		LinkedList<GhostStatus> ghostsStatus = mapController.getGhostsStatus();
-		LinkedList<BombStatus> bombermanStatus = mapController.getBombsStatus();
+		LinkedList<BombermanStatus> bombermanStatus = mapController.getBombermansStatus();
 		//
 		bombStatus.die();
 		bombStatus.getBomberman().setCanBomb(true);
@@ -133,7 +134,8 @@ public class ExplosionThread extends Thread implements Serializable {
 			if(!bomberman.isDead()) {
 				if (checkDeathPos(bomberman.getI())) {
 					bomberman.die();
-					mapController.killedBomberman(bombStatus.getBomberman().getId());
+					if(!bomberman.equals(bombStatus.getBomberman()))
+						mapController.killedBomberman(bombStatus.getBomberman().getId());
 				}
 			}
 	}
