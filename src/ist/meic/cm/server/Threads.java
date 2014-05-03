@@ -75,6 +75,7 @@ class Threads implements Runnable {
 						running = false;
 				} else if (request == Message.END) {
 					try {
+
 						if (game.removePlayer() == 0)
 							synchronized (games) {
 
@@ -176,13 +177,13 @@ class Threads implements Runnable {
 		}
 
 		if (!found) {
-
+			playerID = 0;
 			currentMap = new MapController(levelName, details);
 			currentMap.joinBomberman();
 			Game game = new Game(currentMap);
 			synchronized (games) {
 				games.add(game);
-				this.game = games.get(games.indexOf(game));
+				this.game = games.get(games.lastIndexOf(game));
 				toSend = new Message(Message.SUCCESS, playerID, currentMap,
 						addPlayer(details[1], this.game));
 			}
