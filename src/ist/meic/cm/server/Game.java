@@ -46,4 +46,7 @@ public class Game {
 		return ready;
 	}
 
+	public int removePlayer() {
+		return --maxNumPlayers;
+	}
 }

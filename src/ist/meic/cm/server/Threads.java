@@ -74,9 +74,13 @@ class Threads implements Runnable {
 					if (!request(fromClient))
 						running = false;
 				} else if (request == Message.END) {
-					// TO DO
 					try {
-						// TO DO
+						if (game.removePlayer() == 0)
+							synchronized (games) {
+
+								games.remove(game);
+							}
+
 						clientSocket.close();
 						running = false;
 					} catch (IOException e) {
@@ -146,25 +150,27 @@ class Threads implements Runnable {
 		String levelName = details[0];
 		Message toSend = null;
 		boolean found = false;
-		if (!games.isEmpty()) {
-			for (int i = 0; i < games.size(); i++) {
-				Game game = games.get(i);
-				MapController map = game.getMapController();
+		synchronized (games) {
+			if (!games.isEmpty()) {
+				for (int i = 0; i < games.size(); i++) {
+					Game game = games.get(i);
+					MapController map = game.getMapController();
 
-				if (map.getLevelName().equals(levelName)) {
+					if (map.getLevelName().equals(levelName)) {
 
-					playerID = map.joinBomberman();
-					if (playerID != -1) {
-						found = true;
+						playerID = map.joinBomberman();
+						if (playerID != -1) {
+							found = true;
 
-						currentMap = map;
+							currentMap = map;
 
-						this.game = game;
+							this.game = game;
 
-						toSend = new Message(Message.SUCCESS, playerID,
-								currentMap, addPlayer(details[1], game));
+							toSend = new Message(Message.SUCCESS, playerID,
+									currentMap, addPlayer(details[1], game));
+						}
+						break;
 					}
-					break;
 				}
 			}
 		}
@@ -174,10 +180,12 @@ class Threads implements Runnable {
 			currentMap = new MapController(levelName, details);
 			currentMap.joinBomberman();
 			Game game = new Game(currentMap);
-			games.add(game);
-			this.game = games.get(games.indexOf(game));
-			toSend = new Message(Message.SUCCESS, playerID, currentMap,
-					addPlayer(details[1], game));
+			synchronized (games) {
+				games.add(game);
+				this.game = games.get(games.indexOf(game));
+				toSend = new Message(Message.SUCCESS, playerID, currentMap,
+						addPlayer(details[1], this.game));
+			}
 		}
 
 		return sendToPlayer(toSend);
