@@ -23,6 +23,7 @@ public class MapController implements Serializable {
 	private MapModels mapModel;
 	private String map;
 	private int robotSpeed;
+	private ScoreTable scoreTable;
 	private static String explosionDuration;
 	private static String explosionTimeout;
 	private static String explosionRange;
@@ -37,7 +38,7 @@ public class MapController implements Serializable {
 		mapModel = new MapModels(levelName);
 		map = mapModel.getMap();
 		loadGhosts();
-
+		scoreTable = new ScoreTable();
 		this.robotSpeed = Integer.parseInt(speed);
 
 		ghostThread = new GhostThread(this);
@@ -61,9 +62,10 @@ public class MapController implements Serializable {
 			for (int i = 0; i < mapArray.length; i++)
 				if (mapArray[i] == id) {
 					System.out.println("x:" + x);
-					BombermanStatus status = new BombermanStatus(i, x, y,
+					BombermanStatus status = new BombermanStatus(playerId,i, x, y,
 							map.toCharArray());
 					bombermansStatus.add(status);
+					scoreTable.addPlayer(playerId);
 					break;
 				} else if (mapArray[i] == 'n') {
 					x = 0;
@@ -131,6 +133,14 @@ public class MapController implements Serializable {
 		new ExplosionThread(bombStatus.getI(), bombStatus, this).start();
 	}
 
+	public void killedGhost(int playerId) {
+		scoreTable.killedGhost(playerId);
+	}
+	
+	public void killedBomberman(int playerId) {
+		scoreTable.killedBomberman(playerId);
+	}
+	
 	public boolean isDead(int playerId) {
 		return bombermansStatus.get(playerId).isDead();
 	}
