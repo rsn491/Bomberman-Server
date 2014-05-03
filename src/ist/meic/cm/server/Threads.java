@@ -96,8 +96,10 @@ class Threads implements Runnable {
 
 		int max = game.getMaxNumPlayers();
 
+		Message toSend;
+
 		if (max == 1)
-			sendToPlayer(new Message(Message.FAIL));
+			toSend = new Message(Message.FAIL);
 		else {
 
 			boolean running = true;
@@ -107,8 +109,9 @@ class Threads implements Runnable {
 
 				max = game.getMaxNumPlayers();
 			}
-			sendToPlayer(new Message(Message.SUCCESS));
+			toSend = new Message(Message.SUCCESS);
 		}
+		sendToPlayer(toSend);
 	}
 
 	private void sendUpdatedList() {
