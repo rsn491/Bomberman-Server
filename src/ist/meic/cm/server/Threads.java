@@ -61,9 +61,8 @@ class Threads implements Runnable {
 			if (fromClient == null)
 				running = false;
 
-			int request = fromClient.getCode();
-
-			if (running)
+			if (running) {
+				int request = fromClient.getCode();
 				if (request == Message.JOIN) {
 					if (!join(fromClient))
 						running = false;
@@ -86,6 +85,7 @@ class Threads implements Runnable {
 					}
 				}
 
+			}
 		}
 
 	}
