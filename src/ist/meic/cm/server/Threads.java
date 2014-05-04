@@ -10,8 +10,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 class Threads implements Runnable {
 
@@ -81,6 +83,7 @@ class Threads implements Runnable {
 
 								games.remove(game);
 							}
+
 						currentMap.getBombermansStatus().get(playerID).die();
 
 						clientSocket.close();
@@ -159,17 +162,21 @@ class Threads implements Runnable {
 					MapController map = game.getMapController();
 
 					if (map.getLevelName().equals(levelName)) {
-
-						playerID = map.joinBomberman();
-						if (playerID != -1) {
+						if (game.getPlayers().contains(details[1])) {
+							toSend = new Message(Message.FAIL);
 							found = true;
+						} else {
+							playerID = map.joinBomberman();
+							if (playerID != -1) {
+								found = true;
 
-							currentMap = map;
+								currentMap = map;
 
-							this.game = game;
+								this.game = game;
 
-							toSend = new Message(Message.SUCCESS, playerID,
-									currentMap, addPlayer(details[1], game));
+								toSend = new Message(Message.SUCCESS, playerID,
+										currentMap, addPlayer(details[1], game));
+							}
 						}
 						break;
 					}
