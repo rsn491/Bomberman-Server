@@ -78,13 +78,26 @@ class Threads implements Runnable {
 				} else if (request == Message.END) {
 					try {
 
-						if (game.removePlayer() == 0)
+						LinkedList<BombermanStatus> status = currentMap
+								.getBombermansStatus();
+
+						status.get(playerID).die();
+
+						int i = 0, killed = 0;
+
+						for (BombermanStatus current : status) {
+							if (current.isDead())
+								killed++;
+							i++;
+						}
+
+						int removed = game.removePlayer();
+
+						if (removed == 0 || killed == i)
 							synchronized (games) {
 
 								games.remove(game);
 							}
-
-						currentMap.getBombermansStatus().get(playerID).die();
 
 						clientSocket.close();
 						running = false;
