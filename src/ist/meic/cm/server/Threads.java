@@ -81,6 +81,7 @@ class Threads implements Runnable {
 
 								games.remove(game);
 							}
+						currentMap.getBombermansStatus().get(playerID).die();
 
 						clientSocket.close();
 						running = false;
