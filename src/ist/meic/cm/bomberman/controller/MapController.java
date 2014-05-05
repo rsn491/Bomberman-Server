@@ -90,6 +90,7 @@ public class MapController implements Serializable {
 			if (mapArray[i] == 'G') {
 				GhostStatus status = new GhostStatus(i, x, y, map.toCharArray());
 				ghostsStatus.add(status);
+				x += 1;
 			} else if (mapArray[i] == 'n') {
 				x = 0;
 				y += 1;

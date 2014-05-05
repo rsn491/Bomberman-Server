@@ -4,7 +4,6 @@ import ist.meic.cm.bomberman.controller.PossibleMoves;
 
 import java.io.Serializable;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 
 public class GhostStatus extends Status implements Serializable {
@@ -30,28 +29,30 @@ public class GhostStatus extends Status implements Serializable {
 		if (checkRIGHT())
 			possibleMoves.add(PossibleMoves.RIGHT);
 
-		Random rd = new Random();
-		int nextMove = rd.nextInt(possibleMoves.size());
+		int size = possibleMoves.size();
+		if (size > 0) {
+			Random rd = new Random();
+			int nextMove = rd.nextInt(possibleMoves.size());
 
-		switch (possibleMoves.get(nextMove)) {
-		case UP:
-			up();
-			break;
-		case DOWN:
-			down();
-			break;
-		case RIGHT:
-			right();
-			break;
-		case LEFT:
-			left();
-			break;
-		default:
-			break;
+			switch (possibleMoves.get(nextMove)) {
+			case UP:
+				up();
+				break;
+			case DOWN:
+				down();
+				break;
+			case RIGHT:
+				right();
+				break;
+			case LEFT:
+				left();
+				break;
+			default:
+				break;
+			}
 		}
-
 	}
-	
+
 	protected boolean checkUP() {
 		if (mapArray[i - OTHER_LINE_STEP] == 'E')
 			this.die();
@@ -64,16 +65,14 @@ public class GhostStatus extends Status implements Serializable {
 		if (mapArray[i - 1] == 'E')
 			this.die();
 
-		return mapArray[i - 1] != 'W'
-				&& mapArray[i - 1] != 'O';
+		return mapArray[i - 1] != 'W' && mapArray[i - 1] != 'O';
 	}
 
 	protected boolean checkRIGHT() {
 		if (mapArray[i + 1] == 'E')
 			this.die();
 
-		return mapArray[i + 1] != 'W'
-				&& mapArray[i + 1] != 'O';
+		return mapArray[i + 1] != 'W' && mapArray[i + 1] != 'O';
 	}
 
 	protected boolean checkDOWN() {
@@ -83,5 +82,5 @@ public class GhostStatus extends Status implements Serializable {
 		return mapArray[i + OTHER_LINE_STEP] != 'W'
 				&& mapArray[i + OTHER_LINE_STEP] != 'O';
 	}
-	
+
 }
