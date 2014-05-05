@@ -10,11 +10,13 @@ public class Game {
 	private ArrayList<String> players;
 	private boolean[] ready;
 	private int maxNumPlayers;
+	private int duration;
 
-	public Game(MapController mapController) {
+	public Game(MapController mapController, String duration) {
 		this.mapController = mapController;
 		players = new ArrayList<String>();
 		ready = new boolean[3];
+		this.duration=Integer.parseInt(duration);
 	}
 
 	public void setReady(int playerId) {
@@ -48,5 +50,9 @@ public class Game {
 
 	public int removePlayer() {
 		return --maxNumPlayers;
+	}
+
+	public int getDuration() {
+		return duration;
 	}
 }

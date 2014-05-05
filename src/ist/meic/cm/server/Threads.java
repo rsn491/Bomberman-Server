@@ -10,10 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 class Threads implements Runnable {
 
@@ -188,7 +185,8 @@ class Threads implements Runnable {
 								this.game = game;
 
 								toSend = new Message(Message.SUCCESS, playerID,
-										currentMap, addPlayer(details[1], game));
+										currentMap,
+										addPlayer(details[1], game), game.getDuration());
 							}
 						}
 						break;
@@ -201,7 +199,7 @@ class Threads implements Runnable {
 			playerID = 0;
 			currentMap = new MapController(levelName, details);
 			currentMap.joinBomberman();
-			Game game = new Game(currentMap);
+			Game game = new Game(currentMap, details[8]);
 			synchronized (games) {
 				games.add(game);
 				this.game = games.get(games.lastIndexOf(game));
