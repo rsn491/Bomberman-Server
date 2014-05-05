@@ -1,17 +1,11 @@
 package ist.meic.cm.server;
 
-import ist.meic.cm.bomberman.controller.MapController;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import javax.net.ServerSocketFactory;
-import javax.net.ssl.SSLServerSocketFactory;
 
 public class Server {
 	private static ServerSocket serverSocket;
@@ -43,7 +37,7 @@ public class Server {
 				e.printStackTrace();
 			}
 
-			System.out.println("\nUm jogador ligou-se!");
+			System.out.println("\nA player has connected!");
 
 			threadPool.execute(new Threads(clientSocket, games));
 		}
