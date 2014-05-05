@@ -50,15 +50,42 @@ class Threads implements Runnable {
 			try {
 				fromClient = (Message) input.readObject();
 			} catch (ClassNotFoundException e) {
+				try {
+					terminate();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				running = false;
 				e.printStackTrace();
 			} catch (IOException e) {
+				try {
+					terminate();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				running = false;
 				e.printStackTrace();
+			} catch (Exception e) {
+				try {
+					terminate();
+				} catch (IOException ex) {
+					// TODO Auto-generated catch block
+					ex.printStackTrace();
+				}
+				running = false;
 			}
 
-			if (fromClient == null)
+			if (fromClient == null) {
+				try {
+					terminate();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				running = false;
+			}
 
 			if (running) {
 				int request = fromClient.getCode();
@@ -75,28 +102,7 @@ class Threads implements Runnable {
 				} else if (request == Message.END) {
 					try {
 
-						LinkedList<BombermanStatus> status = currentMap
-								.getBombermansStatus();
-
-						status.get(playerID).die();
-
-						int i = 0, killed = 0;
-
-						for (BombermanStatus current : status) {
-							if (current.isDead())
-								killed++;
-							i++;
-						}
-
-						int removed = game.removePlayer();
-
-						if (removed <= 0 || killed == i)
-							synchronized (games) {
-
-								games.remove(game);
-							}
-
-						clientSocket.close();
+						terminate();
 						running = false;
 					} catch (IOException e) {
 						running = false;
@@ -107,6 +113,30 @@ class Threads implements Runnable {
 			}
 		}
 
+	}
+
+	private void terminate() throws IOException {
+		LinkedList<BombermanStatus> status = currentMap.getBombermansStatus();
+
+		status.get(playerID).die();
+
+		int i = 0, killed = 0;
+
+		for (BombermanStatus current : status) {
+			if (current.isDead())
+				killed++;
+			i++;
+		}
+
+		int removed = game.removePlayer();
+
+		if (removed <= 0 || killed == i)
+			synchronized (games) {
+
+				games.remove(game);
+			}
+
+		clientSocket.close();
 	}
 
 	private void checkToStart() {
@@ -186,7 +216,8 @@ class Threads implements Runnable {
 
 								toSend = new Message(Message.SUCCESS, playerID,
 										currentMap,
-										addPlayer(details[1], game), game.getDuration());
+										addPlayer(details[1], game),
+										game.getDuration());
 							}
 						}
 						break;
