@@ -90,7 +90,7 @@ class Threads implements Runnable {
 
 						int removed = game.removePlayer();
 
-						if (removed == 0 || killed == i)
+						if (removed <= 0 || killed == i)
 							synchronized (games) {
 
 								games.remove(game);
