@@ -33,10 +33,7 @@ class Threads implements Runnable {
 
 			this.input = new ObjectInputStream(clientSocket.getInputStream());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -53,26 +50,18 @@ class Threads implements Runnable {
 				try {
 					terminate();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
 				running = false;
-				e.printStackTrace();
 			} catch (IOException e) {
 				try {
 					terminate();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
 				running = false;
-				e.printStackTrace();
 			} catch (Exception e) {
 				try {
 					terminate();
 				} catch (IOException ex) {
-					// TODO Auto-generated catch block
-					ex.printStackTrace();
 				}
 				running = false;
 			}
@@ -81,8 +70,6 @@ class Threads implements Runnable {
 				try {
 					terminate();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 				running = false;
 			}
@@ -106,7 +93,6 @@ class Threads implements Runnable {
 						running = false;
 					} catch (IOException e) {
 						running = false;
-						e.printStackTrace();
 					}
 				}
 
@@ -254,7 +240,6 @@ class Threads implements Runnable {
 			output.writeObject(toSend);
 			output.reset();
 		} catch (IOException e) {
-			e.printStackTrace();
 			return false;
 
 		}

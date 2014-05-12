@@ -22,7 +22,7 @@ public class MapController implements Serializable {
 	private String levelName;
 	private MapModels mapModel;
 	private String map;
-	private int robotSpeed;
+	private double robotSpeed;
 	private ScoreTable scoreTable;
 	private static String explosionDuration;
 	private static String explosionTimeout;
@@ -38,7 +38,7 @@ public class MapController implements Serializable {
 		map = mapModel.getMap();
 		loadGhosts();
 		scoreTable = new ScoreTable(details[6], details[7]);
-		this.robotSpeed = Integer.parseInt(details[2]);
+		this.robotSpeed = Double.parseDouble(details[2]);
 
 		ghostThread = new GhostThread(this);
 		ghostThread.setRunning(true);
@@ -193,16 +193,16 @@ public class MapController implements Serializable {
 		return map;
 	}
 
-	public int getRobotSpeed() {
+	public double getRobotSpeed() {
 		return robotSpeed;
 	}
 
-	public static int getExplosionDuration() {
-		return Integer.parseInt(explosionDuration);
+	public static double getExplosionDuration() {
+		return Double.parseDouble(explosionDuration);
 	}
 
-	public static int getExplosionTimeout() {
-		return Integer.parseInt(explosionTimeout);
+	public static double getExplosionTimeout() {
+		return Double.parseDouble(explosionTimeout);
 	}
 
 	public static int getExplosionRange() {

@@ -13,15 +13,15 @@ public class ExplosionThread extends Thread implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -390850487009272286L;
-	private int EXPLOSION_DURATION;
-	private int EXPLOSION_TIMEOUT;
+	private long EXPLOSION_DURATION;
+	private long EXPLOSION_TIMEOUT;
 	private int EXPLOSION_RANGE;
 	private MapController mapController;
 	private int position;
 	private BombStatus bombStatus;
 	private char[] array;
 	protected final static int OTHER_LINE_STEP = 21;
-	private static final int ADJUST = 1000;
+	private static final long ADJUST = 1000;
 
 	public ExplosionThread(int position, BombStatus bombStatus,
 			MapController mapController) {
@@ -29,8 +29,8 @@ public class ExplosionThread extends Thread implements Serializable {
 		this.position = position;
 		this.bombStatus = bombStatus;
 
-		EXPLOSION_DURATION = MapController.getExplosionDuration() * ADJUST;
-		EXPLOSION_TIMEOUT = MapController.getExplosionTimeout() * ADJUST;
+		EXPLOSION_DURATION = (long) (MapController.getExplosionDuration() * ADJUST);
+		EXPLOSION_TIMEOUT = (long) (MapController.getExplosionTimeout() * ADJUST);
 		EXPLOSION_RANGE = MapController.getExplosionRange();
 	}
 
