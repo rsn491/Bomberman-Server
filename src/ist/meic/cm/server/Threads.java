@@ -144,6 +144,10 @@ class Threads implements Runnable {
 
 				max = game.getMaxNumPlayers();
 			}
+
+			if (playerID == 0)
+				currentMap.moveGhosts();
+
 			toSend = new Message(Message.SUCCESS);
 		}
 		sendToPlayer(toSend);

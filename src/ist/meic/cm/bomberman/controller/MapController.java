@@ -42,13 +42,16 @@ public class MapController implements Serializable {
 
 		ghostThread = new GhostThread(this);
 		ghostThread.setRunning(true);
-		ghostThread.start();
 
 		explosionDuration = details[3];
 		explosionTimeout = details[4];
 		explosionRange = details[5];
 	}
 
+	public void moveGhosts(){
+		ghostThread.start();
+	}
+	
 	public int joinBomberman() {
 		char[] mapArray = map.toCharArray();
 		int x = 0;
