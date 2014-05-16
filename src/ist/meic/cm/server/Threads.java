@@ -119,6 +119,8 @@ class Threads implements Runnable {
 		if (removed <= 0 || killed == i)
 			synchronized (games) {
 
+				if (game.getTimer() != null)
+					game.getTimer().interrupt();
 				games.remove(game);
 			}
 
@@ -145,10 +147,12 @@ class Threads implements Runnable {
 				max = game.getMaxNumPlayers();
 			}
 
-			if (playerID == 0)
+			if (playerID == 0) {
 				currentMap.moveGhosts();
+				game.timerThread();
+			}
 
-			toSend = new Message(Message.SUCCESS);
+			toSend = new Message(Message.SUCCESS, game.getTmp());
 		}
 		sendToPlayer(toSend);
 	}

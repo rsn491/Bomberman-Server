@@ -24,6 +24,7 @@ public class MapController implements Serializable {
 	private String map;
 	private double robotSpeed;
 	private ScoreTable scoreTable;
+	private int maxNumber;
 	private static String explosionDuration;
 	private static String explosionTimeout;
 	private static String explosionRange;
@@ -35,6 +36,10 @@ public class MapController implements Serializable {
 		bombsStatus = new LinkedList<BombStatus>();
 		this.levelName = levelName;
 		mapModel = new MapModels(levelName);
+		if (mapModel.is4Players())
+			maxNumber = 4;
+		else
+			maxNumber = 3;
 		map = mapModel.getMap();
 		loadGhosts();
 		scoreTable = new ScoreTable(details[6], details[7]);
@@ -42,16 +47,15 @@ public class MapController implements Serializable {
 
 		ghostThread = new GhostThread(this);
 		ghostThread.setRunning(true);
-
 		explosionDuration = details[3];
 		explosionTimeout = details[4];
 		explosionRange = details[5];
 	}
 
-	public void moveGhosts(){
+	public void moveGhosts() {
 		ghostThread.start();
 	}
-	
+
 	public int joinBomberman() {
 		char[] mapArray = map.toCharArray();
 		int x = 0;
@@ -60,7 +64,7 @@ public class MapController implements Serializable {
 
 		char id = Character.forDigit(playerId + 1, 10);
 
-		if (numberOfPlayers < 3) {
+		if (numberOfPlayers < maxNumber) {
 			for (int i = 0; i < mapArray.length; i++)
 				if (mapArray[i] == id) {
 					BombermanStatus status = new BombermanStatus(playerId, i,
